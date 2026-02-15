@@ -46,12 +46,53 @@
  */
 export function createDialogueWriter(genre) {
   // Your code here
+  const genres = ["action", "romance", "comedy", "drama"]
+  if (!genres.includes(genre)) return null
+  const factoryFunction = (hero, villain) => {
+    if (!hero || !villain) return "..."
+    let dialogue = ""
+    switch (genre) {
+      case genres[0]:
+        dialogue = `${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'`
+        break
+      case genres[1]:
+        dialogue = `${hero} whispers: '${villain}, tum mere liye sab kuch ho'`
+        break
+      case genres[2]:
+        dialogue = `${hero} laughs: '${villain} bhai, kya kar rahe ho yaar!'`
+        break
+      case genres[3]:
+        dialogue = `${hero} cries: '${villain}, tune mera sab kuch cheen liya!'`
+        break
+    }
+    return dialogue
+  }
+  return factoryFunction
+
 }
 
 export function createTicketPricer(basePrice) {
   // Your code here
+  if(typeof basePrice !== 'number' || basePrice <= 0) return null
+  const multiplier = (seatType, isWeekend = false) => {
+    const types =  {silver:1, gold:1.5, platinum:2}
+    if(!(seatType in types)) return null
+    let price = basePrice * types[seatType]
+    price = isWeekend ? price * 1.3 : price
+    return Math.round(price)
+  }
+  return multiplier
 }
 
 export function createRatingCalculator(weights) {
   // Your code here
+  if(!weights || typeof weights !== "object") return null
+  const factory = (scores) => {
+    const params = Object.keys(weights)
+    let average = params.reduce((acc , curr) => {
+      return acc + (weights[curr] * scores[curr])
+    },0)
+    return average
+  }
+  return factory
 }
